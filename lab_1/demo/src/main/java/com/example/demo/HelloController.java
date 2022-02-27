@@ -3,10 +3,7 @@ package com.example.demo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.FileInputStream;
@@ -39,10 +36,14 @@ public class HelloController {
         idColumn.setCellValueFactory(new PropertyValueFactory<Record, Integer>("id"));
         dataColumn.setCellValueFactory(new PropertyValueFactory<Record, String>("data"));
 
-        records.add(new Record(i, getInfoFromFile()));
-        table.setItems(records);
+        String fromFile = getInfoFromFile();
 
-        i++;
+        if (fromFile != ""){
+            records.add(new Record(i, getInfoFromFile()));
+            table.setItems(records);
+
+            i++;
+        }
     }
 
     private String getInfoFromFile(){
@@ -58,7 +59,14 @@ public class HelloController {
             return info;
         }
         catch(IOException ex){
-            System.out.println(ex.getMessage());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+            alert.setTitle("ВНИМАНИЕ!");
+            alert.setHeaderText(null);
+            alert.setContentText("Ошибка в пути файла!");
+
+            alert.showAndWait();
+
             return "";
         }
     }
